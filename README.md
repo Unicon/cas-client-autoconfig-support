@@ -11,7 +11,7 @@ Professional Support / Integration Assistance for this module is available. For 
 
 ## Usage
 
-* Define a dependency in your CAS war overlay:
+* Define a dependency:
 
   > Maven:
 
