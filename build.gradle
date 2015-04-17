@@ -1,0 +1,47 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.3.RELEASE'
+    }
+    repositories {
+        jcenter()
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        //classpath("io.spring.gradle:dependency-management-plugin:0.5.0.RELEASE")
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+//apply plugin: 'io.spring.dependency-management'
+apply plugin: 'propdeps'
+
+jar {
+    baseName = 'cas-client-autoconfig-support'
+    version = '1.0.0-M1-SNAPSHOT'
+}
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    jcenter()
+}
+
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+
+    //Deps for CAS client. TODO: externalize version numbers
+    compile("org.jasig.cas.client:cas-client-core:3.3.3")
+    compile("org.opensaml:opensaml:2.6.1")
+    compile("xml-apis:xml-apis:1.4.01")
+
+    provided 'javax.servlet:javax.servlet-api:3.1.0'
+
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
