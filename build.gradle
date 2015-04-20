@@ -1,47 +1,117 @@
+apply plugin: 'java'
+apply plugin: 'signing'
+apply plugin: 'propdeps'
+apply from: 'http://tellurianring.com/projects/gradle-plugins/gradle-release/apply.groovy'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 buildscript {
-    ext {
-        springBootVersion = '1.2.3.RELEASE'
-    }
     repositories {
-        jcenter()
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        //classpath("io.spring.gradle:dependency-management-plugin:0.5.0.RELEASE")
-        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+        classpath "org.springframework.build.gradle:propdeps-plugin:${propdepsVersion}"
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'spring-boot'
-//apply plugin: 'io.spring.dependency-management'
-apply plugin: 'propdeps'
-
-jar {
-    baseName = 'cas-client-autoconfig-support'
-    version = '1.0.0-M1-SNAPSHOT'
+configure(allprojects) {
+    apply plugin: 'propdeps'
+    apply plugin: 'propdeps-maven'
+    apply plugin: 'propdeps-idea'
+    apply plugin: 'propdeps-eclipse'
 }
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
 repositories {
     jcenter()
 }
 
-
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter")
+    compile("org.springframework.boot:spring-boot-starter:${springBootVersion}")
 
-    //Deps for CAS client. TODO: externalize version numbers
-    compile("org.jasig.cas.client:cas-client-core:3.3.3")
-    compile("org.opensaml:opensaml:2.6.1")
-    compile("xml-apis:xml-apis:1.4.01")
+    //Deps for CAS client
+    compile("org.jasig.cas.client:cas-client-core:${casClientVersion}")
+    compile("org.opensaml:opensaml:${openSamlVersion}")
+    compile("xml-apis:xml-apis:${xmlApisVersion}")
 
-    provided 'javax.servlet:javax.servlet-api:3.1.0'
+    provided "javax.servlet:javax.servlet-api:${servletApiVersion}"
+}
 
+//turning off unacceptable Javadoc lint in JDK 8+ which prevents builds with "non-strict" HTML5 javadoc tags
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+      tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+      }
+    }
+}
+
+javadoc {
+    classpath = configurations.compile + configurations.provided
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = "javadoc"
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = "sources"
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = 2.3
+}
+
+
+createReleaseTag.dependsOn uploadArchives
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            repository(url: 'https://api.bintray.com/maven/uniconiam/maven/cas-client-autoconfig-support') {
+                authentication(userName: bintrayUsername, password: bintrayAPIKey)
+            }
+            pom.project {
+                name 'CAS client autoconfig support'
+                packaging 'jar'
+                description 'Annotation-based configuration support for Apereo CAS Java clients'
+                url 'https://github.com/Unicon/cas-client-autoconfig-support'
+
+                scm {
+                    url 'scm:git@github.com:Unicon/cas-client-autoconfig-support.git'
+                    connection 'scm:git@github.com:Unicon/cas-client-autoconfig-support.git'
+                    developerConnection 'scm:git@github.com:Unicon/cas-client-autoconfig-support.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'dima767'
+                        name 'Dmitriy Kopylenko'
+                    }
+                }
+            }
+        }
+    }
 }

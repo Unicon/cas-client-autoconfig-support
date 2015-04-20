@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 
 /**
  * Enables CAS Java client Servlet Filters configuration facility.
- * To be used together with @{@link org.springframework.context.annotation.Configuration Configuration}
- * or @{@link org.springframework.boot.autoconfigure.SpringBootApplication SpringBootApplication} classes.
+ * To be used together with {@link org.springframework.context.annotation.Configuration Configuration}
+ * or {@link org.springframework.boot.autoconfigure.SpringBootApplication SpringBootApplication} classes.
  *
  * <p>For those wishing to customize CAS filters during their creation, application configuration classes carrying this annotation
  * may implement the {@link net.unicon.cas.client.configuration.CasClientConfigurer} callback interface or simply

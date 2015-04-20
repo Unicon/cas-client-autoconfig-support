@@ -1,0 +1,6 @@
+CAS Client Autoconfig Support Changelog
+=======================================
+
+Changes in version 1.0.0-GA
+----------------------------------------
+* Initial release

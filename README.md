@@ -13,7 +13,7 @@ Professional Support / Integration Assistance for this module is available. For 
 
 * Define a dependency:
 
-  > Maven:
+> Maven:
 
   ```xml
   <dependency>
@@ -24,7 +24,7 @@ Professional Support / Integration Assistance for this module is available. For 
   </dependency>
   ```
 
-  > Gradle:
+> Gradle:
 
   ```Groovy
   dependencies {
@@ -36,18 +36,18 @@ Professional Support / Integration Assistance for this module is available. For 
 
 * Add the following properties
 
-  > in Spring Boot's `application.properties` or `application.yml` Example:
+> in Spring Boot's `application.properties` or `application.yml` Example:
 
-  ```bash
-    cas.server.url-prefix=https://my.cas.server/cas
-    cas.client.service-url=https://this.protected.server/app
-    #Optional. Defaults to /login
-    cas.server.login-url=/login
-  ```
+```bash
+   cas.server.url-prefix=https://my.cas.server/cas
+   cas.client.service-url=https://this.protected.server/app
+   #Optional. Defaults to /login
+   cas.server.login-url=/login
+```
 
 * Annotate Spring Boot application (or any @Configuration class) with `@EnableCasClient` annotation
 
-    > For CAS protocol (authentication and validation filters) - which is default
+> For CAS protocol (authentication and validation filters) - which is default
 
 ```java
     @SpringBootApplication
@@ -56,7 +56,7 @@ Professional Support / Integration Assistance for this module is available. For 
     public class MyApplication { .. }
 ```
 
-    > For SAML protocol (authentication and validation filters)
+> For SAML protocol (authentication and validation filters)
 
 ```java
     @SpringBootApplication
