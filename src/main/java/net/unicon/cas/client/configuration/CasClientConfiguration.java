@@ -9,12 +9,14 @@ import org.jasig.cas.client.validation.Saml11TicketValidationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.Filter;
 
@@ -35,16 +37,11 @@ import java.util.Map;
  * @since 1.0.0
  */
 @Configuration
+@EnableConfigurationProperties(CasClientConfigurationProperties.class)
 public class CasClientConfiguration implements ImportAware {
 
-    @Value("${cas.server.url-prefix}")
-    private String casServerUrlPrefix;
-
-    @Value("${cas.server.login-url:/login}")
-    private String casServerLoginUrl;
-
-    @Value("${cas.client.service-url}")
-    private String casClientServiceUrl;
+    @Autowired
+    CasClientConfigurationProperties configProps;
 
     private CasClientConfigurer casClientConfigurer;
 
@@ -60,33 +57,41 @@ public class CasClientConfiguration implements ImportAware {
     }
 
     @Bean
-    public FilterRegistrationBean casAuthenticationFilter() {
-        final FilterRegistrationBean authnFilter = new FilterRegistrationBean();
-        final Filter targetCasAuthnFilter = this.validationType == ValidationType.CAS ? new AuthenticationFilter()
-                : new Saml11AuthenticationFilter();
-
-        authnFilter.setFilter(targetCasAuthnFilter);
-        authnFilter.setUrlPatterns(Arrays.asList("/*"));
-        authnFilter.setOrder(1);
-        authnFilter.setInitParameters(constructInitParams("casServerLoginUrl->" + this.casServerUrlPrefix + this.casServerLoginUrl,
-                this.casClientServiceUrl));
-
-        if (this.casClientConfigurer != null) {
-            this.casClientConfigurer.configureAuthenticationFilter(authnFilter);
-        }
-        return authnFilter;
-    }
-
-    @Bean
     public FilterRegistrationBean casValidationFilter() {
         final FilterRegistrationBean validationFilter = new FilterRegistrationBean();
         final Filter targetCasValidationFilter = this.validationType == ValidationType.CAS ? new Cas20ProxyReceivingTicketValidationFilter()
                 : new Saml11TicketValidationFilter();
 
+        //TODO: refactor these 4 setter calls into a re-usable private method
         validationFilter.setFilter(targetCasValidationFilter);
-        validationFilter.setUrlPatterns(Arrays.asList("/*"));
-        validationFilter.setOrder(2);
-        validationFilter.setInitParameters(constructInitParams("casServerUrlPrefix->" + this.casServerUrlPrefix, this.casClientServiceUrl));
+        validationFilter.setOrder(1);
+        validationFilter.setInitParameters(constructInitParams("casServerUrlPrefix->" + this.configProps.getServerUrlPrefix(),
+                this.configProps.getClientServiceUrl()));
+        if(this.configProps.getValidationUrlPatterns().size() > 0) {
+            validationFilter.setUrlPatterns(this.configProps.getValidationUrlPatterns());
+        }
+
+        if(this.configProps.getUseSession() != null) {
+            validationFilter.getInitParameters().put("useSession", String.valueOf(this.configProps.getUseSession()));
+        }
+        if (this.configProps.getRedirectAfterValidation() != null) {
+            validationFilter.getInitParameters().put("redirectAfterValidation", String.valueOf(this.configProps.getRedirectAfterValidation()));
+        }
+
+        //Proxy tickets validation
+        if(this.configProps.getAcceptAnyProxy() != null) {
+            validationFilter.getInitParameters().put("acceptAnyProxy", String.valueOf(this.configProps.getAcceptAnyProxy()));
+        }
+        if(this.configProps.getAllowedProxyChains().size() > 0) {
+            validationFilter.getInitParameters().put("allowedProxyChains",
+                    StringUtils.collectionToDelimitedString(this.configProps.getAllowedProxyChains(), " "));
+        }
+        if(this.configProps.getProxyCallbackUrl() != null) {
+            validationFilter.getInitParameters().put("proxyCallbackUrl", this.configProps.getProxyCallbackUrl());
+        }
+        if(this.configProps.getProxyReceptorUrl() != null) {
+            validationFilter.getInitParameters().put("proxyReceptorUrl", this.configProps.getProxyReceptorUrl());
+        }
 
         if (this.casClientConfigurer != null) {
             this.casClientConfigurer.configureValidationFilter(validationFilter);
@@ -95,10 +100,39 @@ public class CasClientConfiguration implements ImportAware {
     }
 
     @Bean
+    public FilterRegistrationBean casAuthenticationFilter() {
+        final FilterRegistrationBean authnFilter = new FilterRegistrationBean();
+        final Filter targetCasAuthnFilter = this.validationType == ValidationType.CAS ? new AuthenticationFilter()
+                : new Saml11AuthenticationFilter();
+
+        //TODO: refactor these 4 setter calls into a re-usable private method
+        authnFilter.setFilter(targetCasAuthnFilter);
+        authnFilter.setOrder(2);
+        authnFilter.setInitParameters(constructInitParams("casServerLoginUrl->" + this.configProps.getServerUrlPrefix()
+                + this.configProps.getServerLoginUrl(), this.configProps.getClientServiceUrl()));
+        if(this.configProps.getAuthenticationUrlPatterns().size() > 0) {
+            authnFilter.setUrlPatterns(this.configProps.getAuthenticationUrlPatterns());
+        }
+
+        if(this.configProps.getGateway() != null) {
+            authnFilter.getInitParameters().put("gateway", String.valueOf(this.configProps.getGateway()));
+        }
+
+        if (this.casClientConfigurer != null) {
+            this.casClientConfigurer.configureAuthenticationFilter(authnFilter);
+        }
+        return authnFilter;
+    }
+
+
+
+    @Bean
     public FilterRegistrationBean casHttpServletRequestWrapperFilter() {
         final FilterRegistrationBean reqWrapperFilter = new FilterRegistrationBean();
         reqWrapperFilter.setFilter(new HttpServletRequestWrapperFilter());
-        reqWrapperFilter.setUrlPatterns(Arrays.asList("/*"));
+        if(this.configProps.getRequestWrapperUrlPatterns().size() > 0) {
+            reqWrapperFilter.setUrlPatterns(this.configProps.getRequestWrapperUrlPatterns());
+        }
         reqWrapperFilter.setOrder(3);
 
         if (this.casClientConfigurer != null) {
@@ -111,7 +145,9 @@ public class CasClientConfiguration implements ImportAware {
     public FilterRegistrationBean casAssertionThreadLocalFilter() {
         final FilterRegistrationBean assertionTLFilter = new FilterRegistrationBean();
         assertionTLFilter.setFilter(new AssertionThreadLocalFilter());
-        assertionTLFilter.setUrlPatterns(Arrays.asList("/*"));
+        if(this.configProps.getAssertionThreadLocalUrlPatterns().size() > 0) {
+            assertionTLFilter.setUrlPatterns(this.configProps.getAssertionThreadLocalUrlPatterns());
+        }
         assertionTLFilter.setOrder(4);
 
         if (this.casClientConfigurer != null) {

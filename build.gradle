@@ -28,6 +28,7 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter:${springBootVersion}")
+    compile("javax.validation:validation-api:${validationApiVersion}")
 
     //Deps for CAS client
     compile("org.jasig.cas.client:cas-client-core:${casClientVersion}")
