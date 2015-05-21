@@ -27,16 +27,22 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter:${springBootVersion}")
-    compile("javax.validation:validation-api:${validationApiVersion}")
+    compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    compile "javax.validation:validation-api:${validationApiVersion}"
 
     //Deps for CAS client
-    compile("org.jasig.cas.client:cas-client-core:${casClientVersion}")
-    compile("org.opensaml:opensaml:${openSamlVersion}")
-    compile("xml-apis:xml-apis:${xmlApisVersion}")
+    compile "org.jasig.cas.client:cas-client-core:${casClientVersion}"
+    compile "org.opensaml:opensaml:${openSamlVersion}"
+    compile "xml-apis:xml-apis:${xmlApisVersion}"
 
     provided "javax.servlet:javax.servlet-api:${servletApiVersion}"
+
+    //Configuration metadata generation - for a nice IDE intellisence support
+    optional "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
 }
+
+//Configuration metadata generation
+compileJava.dependsOn(processResources)
 
 //turning off unacceptable Javadoc lint in JDK 8+ which prevents builds with "non-strict" HTML5 javadoc tags
 if (JavaVersion.current().isJava8Compatible()) {

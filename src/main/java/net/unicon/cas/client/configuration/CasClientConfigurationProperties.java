@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * {@link ConfigurationProperties} for CAS Java client filters.
  *
- * Will be used to customize CAS filters via simple properties or YAML files in standard Spring Boot PropertySources
+ * Will be used to customize CAS filters via simple properties or YAML files in standard Spring Boot PropertySources.
  *
  * @author Dmitriy Kopylenko
  * @since 1.0.0
@@ -17,38 +17,77 @@ import java.util.List;
 @ConfigurationProperties(prefix = "cas", ignoreUnknownFields = false)
 public class CasClientConfigurationProperties {
 
+    /**
+     * CAS server URL E.g. https://example.com/cas or https://cas.example/com. Required.
+     */
     @NotNull
     private String serverUrlPrefix;
 
+    /**
+     * CAS server login endpoint URL.
+     */
     private String serverLoginUrl = "/login";
 
+    /**
+     * CAS-protected client application URL. E.g. https://example.com/clientapp. Required.
+     */
     @NotNull
     private String clientServiceUrl;
 
+    /**
+     * List of URL patterns protected by CAS authentication filter.
+     */
     private List<String> authenticationUrlPatterns = new ArrayList<>();
 
+    /**
+     * List of URL patterns protected by CAS validation filter.
+     */
     private List<String> validationUrlPatterns = new ArrayList<>();
 
+    /**
+     * List of URL patterns protected by CAS request wrapper filter.
+     */
     private List<String> requestWrapperUrlPatterns = new ArrayList<>();
 
+    /**
+     * List of URL patterns protected by CAS assertion thread local filter.
+     */
     private List<String> assertionThreadLocalUrlPatterns = new ArrayList<>();
 
+    /**
+     * Authentication filter gateway parameter.
+     */
     private Boolean gateway;
 
+    /**
+     * Validation filter useSession parameter.
+     */
     private Boolean useSession;
 
+    /**
+     * Validation filter redirectAfterValidation.
+     */
     private Boolean redirectAfterValidation;
 
+    /**
+     * Cas20ProxyReceivingTicketValidationFilter acceptAnyProxy parameter.
+     */
     private Boolean acceptAnyProxy;
 
+    /**
+     * Cas20ProxyReceivingTicketValidationFilter allowedProxyChains parameter.
+     */
     private List<String> allowedProxyChains = new ArrayList<>();
 
+    /**
+     * Cas20ProxyReceivingTicketValidationFilter proxyCallbackUrl parameter.
+     */
     private String proxyCallbackUrl;
 
+    /**
+     * Cas20ProxyReceivingTicketValidationFilter proxyReceptorUrl parameter.
+     */
     private String proxyReceptorUrl;
-
-    //Accessors
-
 
     public Boolean getAcceptAnyProxy() {
         return acceptAnyProxy;
