@@ -65,7 +65,7 @@ public class CasClientConfiguration implements ImportAware {
         initFilter(validationFilter,
                 targetCasValidationFilter,
                 1,
-                constructInitParams("casServerUrlPrefix->" + this.configProps.getServerUrlPrefix(), this.configProps.getClientServiceUrl()),
+                constructInitParams("casServerUrlPrefix", this.configProps.getCasServerUrlPrefix(), this.configProps.getClientHostUrl()),
                 this.configProps.getValidationUrlPatterns());
 
         if (this.configProps.getUseSession() != null) {
@@ -104,7 +104,7 @@ public class CasClientConfiguration implements ImportAware {
         initFilter(authnFilter,
                 targetCasAuthnFilter,
                 2,
-                constructInitParams("casServerLoginUrl->" + this.configProps.getServerUrlPrefix() + this.configProps.getServerLoginUrl(), this.configProps.getClientServiceUrl()),
+                constructInitParams("casServerLoginUrl", this.configProps.getCasServerLoginUrl(), this.configProps.getClientHostUrl()),
                 this.configProps.getAuthenticationUrlPatterns());
 
         if (this.configProps.getGateway() != null) {
@@ -163,11 +163,10 @@ public class CasClientConfiguration implements ImportAware {
         this.casClientConfigurer = configurers.iterator().next();
     }
 
-    private Map<String, String> constructInitParams(final String urlKeyAndVal, final String serviceVal) {
-        final String[] urlData = urlKeyAndVal.split("->");
+    private Map<String, String> constructInitParams(final String casUrlParamName, final String casUrlParamVal, final String clientHostUrlVal) {
         final Map<String, String> initParams = new HashMap<>(2);
-        initParams.put(urlData[0], urlData[1]);
-        initParams.put("service", serviceVal);
+        initParams.put(casUrlParamName, casUrlParamVal);
+        initParams.put("serverName", clientHostUrlVal);
         return initParams;
     }
 

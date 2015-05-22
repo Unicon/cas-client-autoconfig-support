@@ -18,21 +18,22 @@ import java.util.List;
 public class CasClientConfigurationProperties {
 
     /**
-     * CAS server URL E.g. https://example.com/cas or https://cas.example/com. Required.
+     * CAS server URL E.g. https://example.com/cas or https://cas.example. Required.
      */
     @NotNull
-    private String serverUrlPrefix;
+    private String casServerUrlPrefix;
 
     /**
-     * CAS server login endpoint URL.
-     */
-    private String serverLoginUrl = "/login";
-
-    /**
-     * CAS-protected client application URL. E.g. https://example.com/clientapp. Required.
+     * CAS server login URL E.g. https://example.com/cas/login or https://cas.example/login. Required.
      */
     @NotNull
-    private String clientServiceUrl;
+    private String casServerLoginUrl;
+
+    /**
+     * CAS-protected client application host URL E.g. https://myclient.example.com Required.
+     */
+    @NotNull
+    private String clientHostUrl;
 
     /**
      * List of URL patterns protected by CAS authentication filter.
@@ -88,6 +89,30 @@ public class CasClientConfigurationProperties {
      * Cas20ProxyReceivingTicketValidationFilter proxyReceptorUrl parameter.
      */
     private String proxyReceptorUrl;
+
+    public String getCasServerUrlPrefix() {
+        return casServerUrlPrefix;
+    }
+
+    public void setCasServerUrlPrefix(String casServerUrlPrefix) {
+        this.casServerUrlPrefix = casServerUrlPrefix;
+    }
+
+    public String getCasServerLoginUrl() {
+        return casServerLoginUrl;
+    }
+
+    public void setCasServerLoginUrl(String casServerLoginUrl) {
+        this.casServerLoginUrl = casServerLoginUrl;
+    }
+
+    public String getClientHostUrl() {
+        return clientHostUrl;
+    }
+
+    public void setClientHostUrl(String clientHostUrl) {
+        this.clientHostUrl = clientHostUrl;
+    }
 
     public Boolean getAcceptAnyProxy() {
         return acceptAnyProxy;
@@ -175,29 +200,5 @@ public class CasClientConfigurationProperties {
 
     public void setAuthenticationUrlPatterns(List<String> authenticationUrlPatterns) {
         this.authenticationUrlPatterns = authenticationUrlPatterns;
-    }
-
-    public String getServerLoginUrl() {
-        return serverLoginUrl;
-    }
-
-    public void setServerLoginUrl(String serverLoginUrl) {
-        this.serverLoginUrl = serverLoginUrl;
-    }
-
-    public String getClientServiceUrl() {
-        return clientServiceUrl;
-    }
-
-    public void setClientServiceUrl(String clientServiceUrl) {
-        this.clientServiceUrl = clientServiceUrl;
-    }
-
-    public String getServerUrlPrefix() {
-        return serverUrlPrefix;
-    }
-
-    public void setServerUrlPrefix(String serverUrlPrefix) {
-        this.serverUrlPrefix = serverUrlPrefix;
     }
 }
