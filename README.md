@@ -7,7 +7,7 @@ Library providing annotation-based configuration support for CAS Java clients. P
 Professional Support / Integration Assistance for this module is available. For more information [visit](https://unicon.net/opensource/cas).
 
 ## Current version
-`1.0.0-M1`
+`1.0.0-RC1`
 
 ## Usage
 
@@ -19,7 +19,7 @@ Professional Support / Integration Assistance for this module is available. For 
   <dependency>
       <groupId>net.unicon.cas</groupId>
       <artifactId>cas-client-autoconfig-support</artifactId>
-      <version>1.0.0-M1</version>
+      <version>1.0.0-RC1</version>
       <scope>runtime</scope>
   </dependency>
   ```
@@ -29,20 +29,19 @@ Professional Support / Integration Assistance for this module is available. For 
   ```Groovy
   dependencies {
         ...
-        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.0.0-M1'
+        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.0.0-RC1'
         ...
   }
   ```
 
-* Add the following properties
+* Add the following required properties
 
 > in Spring Boot's `application.properties` or `application.yml` Example:
 
 ```bash
-   cas.server.url-prefix=https://my.cas.server/cas
-   cas.client.service-url=https://this.protected.server/app
-   #Optional. Defaults to /login
-   cas.server.login-url=/login
+   cas.cas-server-url-prefix=https://cashost.com/cas
+   cas.cas-server-login-url=https://cashost.com/cas/login
+   cas.client-host-url=https://casclient.com
 ```
 
 * Annotate Spring Boot application (or any @Configuration class) with `@EnableCasClient` annotation
