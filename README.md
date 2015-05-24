@@ -39,8 +39,8 @@ Professional Support / Integration Assistance for this module is available. For 
 > in Spring Boot's `application.properties` or `application.yml` Example:
 
 ```bash
-   cas.cas-server-url-prefix=https://cashost.com/cas
-   cas.cas-server-login-url=https://cashost.com/cas/login
+   cas.server-url-prefix=https://cashost.com/cas
+   cas.server-login-url=https://cashost.com/cas/login
    cas.client-host-url=https://casclient.com
 ```
 
