@@ -21,13 +21,13 @@ public class CasClientConfigurationProperties {
      * CAS server URL E.g. https://example.com/cas or https://cas.example. Required.
      */
     @NotNull
-    private String casServerUrlPrefix;
+    private String serverUrlPrefix;
 
     /**
      * CAS server login URL E.g. https://example.com/cas/login or https://cas.example/login. Required.
      */
     @NotNull
-    private String casServerLoginUrl;
+    private String serverLoginUrl;
 
     /**
      * CAS-protected client application host URL E.g. https://myclient.example.com Required.
@@ -90,20 +90,20 @@ public class CasClientConfigurationProperties {
      */
     private String proxyReceptorUrl;
 
-    public String getCasServerUrlPrefix() {
-        return casServerUrlPrefix;
+    public String getServerUrlPrefix() {
+        return serverUrlPrefix;
     }
 
-    public void setCasServerUrlPrefix(String casServerUrlPrefix) {
-        this.casServerUrlPrefix = casServerUrlPrefix;
+    public void setServerUrlPrefix(String serverUrlPrefix) {
+        this.serverUrlPrefix = serverUrlPrefix;
     }
 
-    public String getCasServerLoginUrl() {
-        return casServerLoginUrl;
+    public String getServerLoginUrl() {
+        return serverLoginUrl;
     }
 
-    public void setCasServerLoginUrl(String casServerLoginUrl) {
-        this.casServerLoginUrl = casServerLoginUrl;
+    public void setServerLoginUrl(String serverLoginUrl) {
+        this.serverLoginUrl = serverLoginUrl;
     }
 
     public String getClientHostUrl() {

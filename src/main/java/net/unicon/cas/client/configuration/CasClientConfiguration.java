@@ -7,7 +7,6 @@ import org.jasig.cas.client.util.HttpServletRequestWrapperFilter;
 import org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter;
 import org.jasig.cas.client.validation.Saml11TicketValidationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +21,6 @@ import javax.servlet.Filter;
 
 import static net.unicon.cas.client.configuration.EnableCasClient.*;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +63,7 @@ public class CasClientConfiguration implements ImportAware {
         initFilter(validationFilter,
                 targetCasValidationFilter,
                 1,
-                constructInitParams("casServerUrlPrefix", this.configProps.getCasServerUrlPrefix(), this.configProps.getClientHostUrl()),
+                constructInitParams("casServerUrlPrefix", this.configProps.getServerUrlPrefix(), this.configProps.getClientHostUrl()),
                 this.configProps.getValidationUrlPatterns());
 
         if (this.configProps.getUseSession() != null) {
@@ -104,7 +102,7 @@ public class CasClientConfiguration implements ImportAware {
         initFilter(authnFilter,
                 targetCasAuthnFilter,
                 2,
-                constructInitParams("casServerLoginUrl", this.configProps.getCasServerLoginUrl(), this.configProps.getClientHostUrl()),
+                constructInitParams("casServerLoginUrl", this.configProps.getServerLoginUrl(), this.configProps.getClientHostUrl()),
                 this.configProps.getAuthenticationUrlPatterns());
 
         if (this.configProps.getGateway() != null) {
