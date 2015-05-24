@@ -7,7 +7,7 @@ Library providing annotation-based configuration support for CAS Java clients. P
 Professional Support / Integration Assistance for this module is available. For more information [visit](https://unicon.net/opensource/cas).
 
 ## Current version
-`1.0.0-RC1`
+`1.0.0-RC2`
 
 ## Usage
 
@@ -19,7 +19,7 @@ Professional Support / Integration Assistance for this module is available. For 
   <dependency>
       <groupId>net.unicon.cas</groupId>
       <artifactId>cas-client-autoconfig-support</artifactId>
-      <version>1.0.0-RC1</version>
+      <version>1.0.0-RC2</version>
       <scope>runtime</scope>
   </dependency>
   ```
@@ -29,7 +29,7 @@ Professional Support / Integration Assistance for this module is available. For 
   ```Groovy
   dependencies {
         ...
-        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.0.0-RC1'
+        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.0.0-RC2'
         ...
   }
   ```
