@@ -7,7 +7,7 @@ Library providing annotation-based configuration support for CAS Java clients. P
 Professional Support / Integration Assistance for this module is available. For more information [visit](https://unicon.net/opensource/cas).
 
 ## Current version
-`1.0.0-RC2`
+`1.0.0-GA`
 
 ## Usage
 
@@ -19,7 +19,7 @@ Professional Support / Integration Assistance for this module is available. For 
   <dependency>
       <groupId>net.unicon.cas</groupId>
       <artifactId>cas-client-autoconfig-support</artifactId>
-      <version>1.0.0-RC2</version>
+      <version>1.0.0-GA</version>
       <scope>runtime</scope>
   </dependency>
   ```
@@ -29,7 +29,7 @@ Professional Support / Integration Assistance for this module is available. For 
   ```Groovy
   dependencies {
         ...
-        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.0.0-RC2'
+        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.0.0-GA'
         ...
   }
   ```
@@ -63,3 +63,46 @@ Professional Support / Integration Assistance for this module is available. For 
     @EnableCasClient(validationType = EnableCasClient.ValidationType.SAML)
     public class MyApplication { .. }
 ```
+
+## Available optional properties
+
+* `cas.authentication-url-patterns`
+* `cas.validation-url-patterns`
+* `cas.request-wrapper-url-patterns`
+* `assertion-thread-local-url-patterns`
+* `cas.gateway`
+* `cas.use-session`
+* `cas.redirect-after-validation`
+* `cas.allowed-proxy-chains`
+* `cas.proxy-callback-url`
+* `cas.proxy-receptor-url`
+* `cas.accept-any-proxy`
+* `server.context-parameters.renew`
+
+## Advanced configuration
+
+This library does not expose ALL the CAS client configuration options via standard Spring property sources, but only most commonly used ones.
+If there is a need however, to set any number of not exposed, 'exotic' properties, there is a way: just extend `CasClientConfigurerAdapter`
+class in your `@EnableCasClient` annotated class and override appropriate configuration method(s) for CAS client filter(s) in question.
+For example:
+
+```java
+    @SpringBootApplication
+    @EnableCasClient
+    class CasProtectedApplication extends CasClientConfigurerAdapter {    
+        @Override
+        void configureValidationFilter(FilterRegistrationBean validationFilter) {           
+            validationFilter.getInitParameters().put("millisBetweenCleanUps", "120000");
+        }        
+        @Override
+        void configureAuthenticationFilter(FilterRegistrationBean authenticationFilter) {
+            authenticationFilter.getInitParameters().put("artifactParameterName", "casTicket");
+            authenticationFilter.getInitParameters().put("serviceParameterName", "targetService");
+        }                                
+    }
+```        
+
+
+
+    
+

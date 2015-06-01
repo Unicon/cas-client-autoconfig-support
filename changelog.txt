@@ -1,6 +1,6 @@
 CAS Client Autoconfig Support Changelog
 =======================================
 
-Changes in version 1.0.0-GA
+Changes in version 1.0.0-GA (2015-06-01)
 ----------------------------------------
 * Initial release
