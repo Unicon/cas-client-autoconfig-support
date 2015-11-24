@@ -1,6 +1,11 @@
 CAS Client Autoconfig Support Changelog
 =======================================
 
+Changes in version 1.1.0-GA (2015-11-24)
+----------------------------------------
+* upgraded cas client version to `3.4.1`
+* added support for CAS v3 protocol ST validation
+
 Changes in version 1.0.0-GA (2015-06-01)
 ----------------------------------------
 * Initial release

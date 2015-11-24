@@ -3,8 +3,8 @@ apply plugin: 'signing'
 apply plugin: 'propdeps'
 apply from: 'http://tellurianring.com/projects/gradle-plugins/gradle-release/apply.groovy'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 buildscript {
     repositories {
@@ -32,8 +32,7 @@ dependencies {
 
     //Deps for CAS client
     compile "org.jasig.cas.client:cas-client-core:${casClientVersion}"
-    compile "org.opensaml:opensaml:${openSamlVersion}"
-    compile "xml-apis:xml-apis:${xmlApisVersion}"
+    compile "org.jasig.cas.client:cas-client-support-saml:${casClientVersion}"
 
     provided "javax.servlet:javax.servlet-api:${servletApiVersion}"
 
@@ -79,7 +78,7 @@ signing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = 2.3
+    gradleVersion = 2.9
 }
 
 

@@ -5,6 +5,7 @@ import org.jasig.cas.client.authentication.Saml11AuthenticationFilter;
 import org.jasig.cas.client.util.AssertionThreadLocalFilter;
 import org.jasig.cas.client.util.HttpServletRequestWrapperFilter;
 import org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter;
+import org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter;
 import org.jasig.cas.client.validation.Saml11TicketValidationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
@@ -20,6 +21,8 @@ import org.springframework.util.StringUtils;
 import javax.servlet.Filter;
 
 import static net.unicon.cas.client.configuration.EnableCasClient.*;
+import static net.unicon.cas.client.configuration.EnableCasClient.ValidationType.CAS;
+import static net.unicon.cas.client.configuration.EnableCasClient.ValidationType.CAS3;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -58,7 +61,20 @@ public class CasClientConfiguration implements ImportAware {
     @Bean
     public FilterRegistrationBean casValidationFilter() {
         final FilterRegistrationBean validationFilter = new FilterRegistrationBean();
-        final Filter targetCasValidationFilter = this.validationType == ValidationType.CAS ? new Cas20ProxyReceivingTicketValidationFilter() : new Saml11TicketValidationFilter();
+        final Filter targetCasValidationFilter;
+        switch (this.validationType) {
+            case CAS:
+                targetCasValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
+                break;
+            case CAS3:
+                targetCasValidationFilter = new Cas30ProxyReceivingTicketValidationFilter();
+                break;
+            case SAML:
+                targetCasValidationFilter = new Saml11TicketValidationFilter();
+                break;
+            default:
+                throw new IllegalStateException("Unknown CAS validation type");
+        }
 
         initFilter(validationFilter,
                 targetCasValidationFilter,
@@ -97,7 +113,8 @@ public class CasClientConfiguration implements ImportAware {
     @Bean
     public FilterRegistrationBean casAuthenticationFilter() {
         final FilterRegistrationBean authnFilter = new FilterRegistrationBean();
-        final Filter targetCasAuthnFilter = this.validationType == ValidationType.CAS ? new AuthenticationFilter() : new Saml11AuthenticationFilter();
+        final Filter targetCasAuthnFilter = (this.validationType == CAS || this.validationType == CAS3) ? new AuthenticationFilter()
+                : new Saml11AuthenticationFilter();
 
         initFilter(authnFilter,
                 targetCasAuthnFilter,

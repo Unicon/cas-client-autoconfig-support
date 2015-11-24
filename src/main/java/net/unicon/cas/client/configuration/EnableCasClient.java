@@ -35,6 +35,7 @@ public @interface EnableCasClient {
 
     enum ValidationType {
         CAS,
+        CAS3,
         SAML
     }
 }

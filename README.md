@@ -7,7 +7,7 @@ Library providing annotation-based configuration support for CAS Java clients. P
 Professional Support / Integration Assistance for this module is available. For more information [visit](https://unicon.net/opensource/cas).
 
 ## Current version
-`1.0.0-GA`
+`1.1.0-GA`
 
 ## Usage
 
@@ -19,7 +19,7 @@ Professional Support / Integration Assistance for this module is available. For 
   <dependency>
       <groupId>net.unicon.cas</groupId>
       <artifactId>cas-client-autoconfig-support</artifactId>
-      <version>1.0.0-GA</version>
+      <version>1.1.0-GA</version>
       <scope>runtime</scope>
   </dependency>
   ```
@@ -29,7 +29,7 @@ Professional Support / Integration Assistance for this module is available. For 
   ```Groovy
   dependencies {
         ...
-        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.0.0-GA'
+        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.1.0-GA'
         ...
   }
   ```
@@ -46,12 +46,30 @@ Professional Support / Integration Assistance for this module is available. For 
 
 * Annotate Spring Boot application (or any @Configuration class) with `@EnableCasClient` annotation
 
-> For CAS protocol (authentication and validation filters) - which is default
+> For CAS protocol (authentication and validation filters) - which is default if nothing is specified
 
 ```java
     @SpringBootApplication
     @Controller
     @EnableCasClient
+    public class MyApplication { .. }
+```
+
+or explicitly:
+
+```java
+    @SpringBootApplication
+    @Controller
+    @EnableCasClient(validationType = EnableCasClient.ValidationType.CAS)
+    public class MyApplication { .. }
+```
+
+> For CAS3 protocol (authentication and validation filters)
+
+```java
+    @SpringBootApplication
+    @Controller
+    @EnableCasClient(validationType = EnableCasClient.ValidationType.CAS3)
     public class MyApplication { .. }
 ```
 
@@ -69,7 +87,7 @@ Professional Support / Integration Assistance for this module is available. For 
 * `cas.authentication-url-patterns`
 * `cas.validation-url-patterns`
 * `cas.request-wrapper-url-patterns`
-* `assertion-thread-local-url-patterns`
+* `cas.assertion-thread-local-url-patterns`
 * `cas.gateway`
 * `cas.use-session`
 * `cas.redirect-after-validation`
