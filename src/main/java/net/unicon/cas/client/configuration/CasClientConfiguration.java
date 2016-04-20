@@ -23,6 +23,7 @@ import javax.servlet.Filter;
 import static net.unicon.cas.client.configuration.EnableCasClient.*;
 import static net.unicon.cas.client.configuration.EnableCasClient.ValidationType.CAS;
 import static net.unicon.cas.client.configuration.EnableCasClient.ValidationType.CAS3;
+import static net.unicon.cas.client.configuration.EnableCasClient.ValidationType.SAML;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,29 +41,18 @@ import java.util.Map;
  */
 @Configuration
 @EnableConfigurationProperties(CasClientConfigurationProperties.class)
-public class CasClientConfiguration implements ImportAware {
+public class CasClientConfiguration {
 
     @Autowired
     CasClientConfigurationProperties configProps;
 
     private CasClientConfigurer casClientConfigurer;
 
-    private ValidationType validationType;
-
-    @Override
-    public void setImportMetadata(AnnotationMetadata importMetadata) {
-        AnnotationAttributes annotationAttributes = AnnotationAttributes.fromMap(importMetadata.getAnnotationAttributes(EnableCasClient.class.getName()));
-        if (annotationAttributes == null) {
-            throw new IllegalArgumentException("@EnableCasClient is not present on importing class " + importMetadata.getClassName());
-        }
-        this.validationType = annotationAttributes.getEnum("validationType");
-    }
-
     @Bean
     public FilterRegistrationBean casValidationFilter() {
         final FilterRegistrationBean validationFilter = new FilterRegistrationBean();
         final Filter targetCasValidationFilter;
-        switch (this.validationType) {
+        switch (this.configProps.getValidationType()) {
             case CAS:
                 targetCasValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
                 break;
@@ -113,8 +103,9 @@ public class CasClientConfiguration implements ImportAware {
     @Bean
     public FilterRegistrationBean casAuthenticationFilter() {
         final FilterRegistrationBean authnFilter = new FilterRegistrationBean();
-        final Filter targetCasAuthnFilter = (this.validationType == CAS || this.validationType == CAS3) ? new AuthenticationFilter()
-                : new Saml11AuthenticationFilter();
+        final Filter targetCasAuthnFilter =
+                (this.configProps.getValidationType() == CAS || configProps.getValidationType() == CAS3) ? new AuthenticationFilter()
+                        : new Saml11AuthenticationFilter();
 
         initFilter(authnFilter,
                 targetCasAuthnFilter,

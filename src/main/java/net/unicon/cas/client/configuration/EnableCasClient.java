@@ -31,8 +31,6 @@ import java.lang.annotation.Target;
 @Import(CasClientConfiguration.class)
 public @interface EnableCasClient {
 
-    ValidationType validationType() default ValidationType.CAS;
-
     enum ValidationType {
         CAS,
         CAS3,

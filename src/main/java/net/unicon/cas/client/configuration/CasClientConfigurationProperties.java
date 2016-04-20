@@ -1,10 +1,13 @@
 package net.unicon.cas.client.configuration;
 
+import net.unicon.cas.client.configuration.EnableCasClient.ValidationType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.unicon.cas.client.configuration.EnableCasClient.ValidationType.CAS3;
 
 /**
  * {@link ConfigurationProperties} for CAS Java client filters.
@@ -89,6 +92,11 @@ public class CasClientConfigurationProperties {
      * Cas20ProxyReceivingTicketValidationFilter proxyReceptorUrl parameter.
      */
     private String proxyReceptorUrl;
+
+    /**
+     * ValidationType the CAS protocol validation type. Defaults to CAS3 if not explicitly set.
+     */
+    private ValidationType validationType = CAS3;
 
     public String getServerUrlPrefix() {
         return serverUrlPrefix;
@@ -200,5 +208,13 @@ public class CasClientConfigurationProperties {
 
     public void setAuthenticationUrlPatterns(List<String> authenticationUrlPatterns) {
         this.authenticationUrlPatterns = authenticationUrlPatterns;
+    }
+
+    public ValidationType getValidationType() {
+        return validationType;
+    }
+
+    public void setValidationType(ValidationType validationType) {
+        this.validationType = validationType;
     }
 }
