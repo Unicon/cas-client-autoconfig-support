@@ -19,7 +19,7 @@ Professional Support / Integration Assistance for this module is available. For 
   <dependency>
       <groupId>net.unicon.cas</groupId>
       <artifactId>cas-client-autoconfig-support</artifactId>
-      <version>1.2.0-GA</version>
+      <version>1.3.0-GA</version>
       <scope>runtime</scope>
   </dependency>
   ```
@@ -29,7 +29,7 @@ Professional Support / Integration Assistance for this module is available. For 
   ```Groovy
   dependencies {
         ...
-        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.2.0-GA'
+        runtime 'net.unicon.cas:cas-client-autoconfig-support:1.3.0-GA'
         ...
   }
   ```
