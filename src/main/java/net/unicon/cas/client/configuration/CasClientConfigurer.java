@@ -1,6 +1,6 @@
 package net.unicon.cas.client.configuration;
 
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 
 /**
  * Callback interface to be implemented by {@link org.springframework.context.annotation.Configuration Configuration} classes annotated with

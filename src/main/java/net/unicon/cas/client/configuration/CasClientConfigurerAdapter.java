@@ -1,6 +1,6 @@
 package net.unicon.cas.client.configuration;
 
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 
 /**
  * An implementation of {@link net.unicon.cas.client.configuration.CasClientConfigurer} with empty methods allowing

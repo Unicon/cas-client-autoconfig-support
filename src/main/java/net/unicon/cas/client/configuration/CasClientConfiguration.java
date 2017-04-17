@@ -8,22 +8,17 @@ import org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter
 import org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter;
 import org.jasig.cas.client.validation.Saml11TicketValidationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportAware;
-import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.Filter;
 
-import static net.unicon.cas.client.configuration.EnableCasClient.*;
 import static net.unicon.cas.client.configuration.EnableCasClient.ValidationType.CAS;
 import static net.unicon.cas.client.configuration.EnableCasClient.ValidationType.CAS3;
-import static net.unicon.cas.client.configuration.EnableCasClient.ValidationType.SAML;
 
 import java.util.Collection;
 import java.util.HashMap;

@@ -11,7 +11,7 @@ buildscript {
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
-        classpath "org.springframework.build.gradle:propdeps-plugin:${propdepsVersion}"
+        classpath "io.spring.gradle:propdeps-plugin:${propdepsVersion}"
     }
 }
 
@@ -78,7 +78,7 @@ signing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = 2.12
+    gradleVersion = 3.5
 }
 
 
