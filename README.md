@@ -28,7 +28,7 @@ Professional Support / Integration Assistance for this module is available. For 
   ```Groovy
   dependencies {
         ...
-        compile 'net.unicon.cas:cas-client-autoconfig-support:1.3.0-GA'
+        compile 'net.unicon.cas:cas-client-autoconfig-support:1.4.0-GA'
         ...
   }
   ```
