@@ -12,3 +12,4 @@ bin/
 *.ipr
 *.iws
 requirements/
+.vscode/
