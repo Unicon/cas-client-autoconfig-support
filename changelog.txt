@@ -1,6 +1,10 @@
 CAS Client Autoconfig Support Changelog
 =======================================
 
+Changes in version 1.7.0-GA (2018-06-14)
+----------------------------------------
+* updated dependencies versions
+
 Changes in version 1.6.0-GA (2018-01-15)
 ----------------------------------------
 * updated dependencies versions
