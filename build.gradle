@@ -1,26 +1,21 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'maven'
 apply plugin: 'signing'
-apply plugin: 'propdeps'
+
+apply plugin: 'io.spring.dependency-management'
 apply from: 'http://tellurianring.com/projects/gradle-plugins/gradle-release/apply.groovy'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-buildscript {
-    repositories {
-        maven { url 'http://repo.spring.io/plugins-release' }
-    }
-    dependencies {
-        classpath "io.spring.gradle:propdeps-plugin:${propdepsVersion}"
-    }
-}
-
-configure(allprojects) {
-    apply plugin: 'propdeps'
-    apply plugin: 'propdeps-maven'
-    apply plugin: 'propdeps-idea'
-    apply plugin: 'propdeps-eclipse'
-}
 
 repositories {
     jcenter()
@@ -34,10 +29,10 @@ dependencies {
     compile "org.jasig.cas.client:cas-client-core:${casClientVersion}"
     compile "org.jasig.cas.client:cas-client-support-saml:${casClientVersion}"
 
-    provided "javax.servlet:javax.servlet-api:${servletApiVersion}"
+    compileOnly "javax.servlet:javax.servlet-api:${servletApiVersion}"
 
     //Configuration metadata generation - for a nice IDE intellisence support
-    optional "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
 }
 
 //Configuration metadata generation
@@ -53,7 +48,7 @@ if (JavaVersion.current().isJava8Compatible()) {
 }
 
 javadoc {
-    classpath = configurations.compile + configurations.provided
+    classpath = configurations.compile + configurations.compileOnly
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -78,7 +73,7 @@ signing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.8'
+    gradleVersion = '4.10.1'
 }
 
 
