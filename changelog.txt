@@ -1,6 +1,10 @@
 CAS Client Autoconfig Support Changelog
 =======================================
 
+Changes in version 2.1.0-GA (2018-11-01)
+----------------------------------------
+* upgraded cas client version to `3.5.1`
+
 Changes in version 2.0.0-GA (2018-09-18)
 ----------------------------------------
 * updated Spring Boot to 2.0.5.RELEASE
