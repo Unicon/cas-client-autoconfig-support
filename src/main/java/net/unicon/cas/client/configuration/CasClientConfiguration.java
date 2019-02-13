@@ -8,6 +8,7 @@ import org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter
 import org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter;
 import org.jasig.cas.client.validation.Saml11TicketValidationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,7 @@ public class CasClientConfiguration {
     private CasClientConfigurer casClientConfigurer;
 
     @Bean
+    @ConditionalOnProperty(prefix = "cas", name = "skipTicketValidation", havingValue = "false", matchIfMissing = true)
     public FilterRegistrationBean casValidationFilter() {
         final FilterRegistrationBean validationFilter = new FilterRegistrationBean();
         final Filter targetCasValidationFilter;

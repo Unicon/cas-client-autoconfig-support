@@ -1,6 +1,11 @@
 CAS Client Autoconfig Support Changelog
 =======================================
 
+Changes in version 2.2.0-GA (2019-02-13)
+----------------------------------------
+* updated Spring Boot to 2.1.2.RELEASE
+* implemented `skipTicketValidation` configuration option useful for JWTs as tickets facility in CAS
+
 Changes in version 2.1.0-GA (2018-11-01)
 ----------------------------------------
 * upgraded cas client version to `3.5.1`

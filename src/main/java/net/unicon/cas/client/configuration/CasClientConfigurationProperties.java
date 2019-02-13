@@ -98,6 +98,8 @@ public class CasClientConfigurationProperties {
      */
     private ValidationType validationType = CAS3;
 
+    private Boolean skipTicketValidation = false;
+
     public String getServerUrlPrefix() {
         return serverUrlPrefix;
     }
@@ -216,5 +218,13 @@ public class CasClientConfigurationProperties {
 
     public void setValidationType(ValidationType validationType) {
         this.validationType = validationType;
+    }
+
+    public Boolean getSkipTicketValidation() {
+        return skipTicketValidation;
+    }
+
+    public void setSkipTicketValidation(Boolean skipTicketValidation) {
+        this.skipTicketValidation = skipTicketValidation;
     }
 }
