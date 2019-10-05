@@ -1,6 +1,9 @@
 cas-client-autoconfig-support
 =============================
 
+# NOTE
+The code from this project has been merged into official Apereo Java CAS client library as a module. The maintenance of this project has been discontinued. Please see [Official CAS client module](https://github.com/apereo/java-cas-client#spring-boot-autoconfiguration)
+
 Library providing annotation-based configuration support for CAS Java clients. Primarily designed for super easy CASification of Spring Boot apps.
 
 > This project was developed as part of Unicon's [Open Source Support program](https://unicon.net/opensource).
